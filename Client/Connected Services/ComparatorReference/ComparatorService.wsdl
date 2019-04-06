@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://achilles.tu.kielce.pl" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://achilles.tu.kielce.pl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://achilles.tu.kielce.pl/Imports">
+      <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd0" namespace="http://achilles.tu.kielce.pl" />
+      <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" />
+      <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IComparatorService_joinToServer_InputMessage">
+    <wsdl:part name="parameters" element="tns:joinToServer" />
+  </wsdl:message>
+  <wsdl:message name="IComparatorService_joinToServer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:joinToServerResponse" />
+  </wsdl:message>
+  <wsdl:message name="IComparatorService_fetchFilesToCompare_InputMessage">
+    <wsdl:part name="parameters" element="tns:fetchFilesToCompare" />
+  </wsdl:message>
+  <wsdl:message name="IComparatorService_fetchFilesToCompare_OutputMessage">
+    <wsdl:part name="parameters" element="tns:fetchFilesToCompareResponse" />
+  </wsdl:message>
+  <wsdl:message name="IComparatorService_downloadFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:downloadFile" />
+  </wsdl:message>
+  <wsdl:message name="IComparatorService_downloadFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:downloadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IComparatorService_finishComparing_InputMessage">
+    <wsdl:part name="parameters" element="tns:finishComparing" />
+  </wsdl:message>
+  <wsdl:message name="IComparatorService_finishComparing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:finishComparingResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IComparatorService">
+    <wsdl:operation name="joinToServer">
+      <wsdl:input wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/joinToServer" message="tns:IComparatorService_joinToServer_InputMessage" />
+      <wsdl:output wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/joinToServerResponse" message="tns:IComparatorService_joinToServer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="fetchFilesToCompare">
+      <wsdl:input wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompare" message="tns:IComparatorService_fetchFilesToCompare_InputMessage" />
+      <wsdl:output wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompareResponse" message="tns:IComparatorService_fetchFilesToCompare_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="downloadFile">
+      <wsdl:input wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/downloadFile" message="tns:IComparatorService_downloadFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/downloadFileResponse" message="tns:IComparatorService_downloadFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="finishComparing">
+      <wsdl:input wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/finishComparing" message="tns:IComparatorService_finishComparing_InputMessage" />
+      <wsdl:output wsaw:Action="http://achilles.tu.kielce.pl/IComparatorService/finishComparingResponse" message="tns:IComparatorService_finishComparing_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

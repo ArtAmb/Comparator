@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://achilles.tu.kielce.pl" elementFormDefault="qualified" targetNamespace="http://achilles.tu.kielce.pl" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" />
+  <xs:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
+  <xs:element name="joinToServer">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="joinToServerResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fetchFilesToCompare">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="fetchFilesToCompareResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="fetchFilesToCompareResult" nillable="true" type="q1:FilesToCompare" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="downloadFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="fileName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="downloadFileResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.microsoft.com/Message" name="downloadFileResult" type="q2:StreamBody" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="finishComparing">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="comparingResult" nillable="true" type="q3:ComparingResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="finishComparingResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
