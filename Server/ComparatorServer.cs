@@ -24,8 +24,10 @@ namespace Server
 
         private Boolean running = false;
         private List<FileToCompare> allFiles = new List<FileToCompare>();
+        private List<FilesToCompare> uniquePairsOfFilesToCompare = new List<FilesToCompare>();
 
         public List<FileToCompare> AllFiles { get => allFiles; }
+        public List<FilesToCompare> UniquePairsOfFilesToCompare { get => uniquePairsOfFilesToCompare; }
 
         private ComparatorServer()
         {
@@ -40,22 +42,47 @@ namespace Server
             running = true;
 
 
+            loadFiles(directoryWithFiles);
+
+            fillUniqueParisOfFilesToCompare();
+
+
+            DataDTO data = new DataDTO();
+            data.PathToFiles = directoryWithFiles;
+            data.UniquePairsOfFilesToCompare = UniquePairsOfFilesToCompare;
+            data.AllFiles = AllFiles;
+
+            DataContainer.loadData(data);
+
+            startHosting();
+        }
+
+        private void loadFiles(string directoryWithFiles)
+        {
             string[] filesPaths = Directory.GetFiles(directoryWithFiles, "*.txt");
-            //string[] filesPaths = Directory.GetFiles(directoryWithFiles);
             foreach (string filePath in filesPaths)
             {
                 FileToCompare file = new FileToCompare();
-          
+
                 file.Md5Sum = calculateMd5(filePath);
                 file.Path = filePath;
                 file.FileName = Path.GetFileName(filePath);
 
                 AllFiles.Add(file);
             }
+        }
 
+        private void fillUniqueParisOfFilesToCompare()
+        {
+            for (int i = 0; i < AllFiles.Count - 1; ++i)
+                for (int j = i + 1; j < AllFiles.Count; ++j)
+                {
+                    FilesToCompare filesToCompare = new FilesToCompare();
+                    filesToCompare.File1MD5 = AllFiles[i].Md5Sum;
+                    filesToCompare.File2MD5 = AllFiles[j].Md5Sum;
 
-
-            startHosting();
+                    UniquePairsOfFilesToCompare.Add(filesToCompare);
+                }
         }
 
         private void startHosting()

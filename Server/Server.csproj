@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparatorServer.cs" />
-    <Compile Include="FileToCompare.cs" />
     <Compile Include="StartForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Text;
 
 namespace WcfServiceLibrary1
@@ -17,7 +18,7 @@ namespace WcfServiceLibrary1
         {
             MemoryStream stream = new MemoryStream();
             Console.WriteLine("Downloading file " + fileName);
-            var bytes = File.ReadAllBytes(path + fileName);
+            var bytes = File.ReadAllBytes(DataContainer.read().PathToFiles + fileName);
             stream.Write(bytes, 0, bytes.Length);
             stream.Position = 0;
 
@@ -36,7 +37,24 @@ namespace WcfServiceLibrary1
 
         public void joinToServer()
         {
-            Console.WriteLine("New client join to server");
+            OperationContext oOperationContext = OperationContext.Current;
+            MessageProperties oMessageProperties = oOperationContext.IncomingMessageProperties;
+            RemoteEndpointMessageProperty oRemoteEndpointMessageProperty = (RemoteEndpointMessageProperty)oMessageProperties[RemoteEndpointMessageProperty.Name];
+
+            string szAddress = oRemoteEndpointMessageProperty.Address;
+            int nPort = oRemoteEndpointMessageProperty.Port;
+
+            DataContainer.read().LogMessages.Add("Id address " + szAddress);
+            DataContainer.read().LogMessages.Add("PORT " + nPort);
+
+            Worker worker = new Worker();
+
+            worker.Ip = szAddress;
+            worker.Port = nPort.ToString();
+            worker.Uuid = System.Guid.NewGuid().ToString();
+
+            DataContainer.read().AllClients.Add(worker);
+
         }
 
         public void heartbeat()

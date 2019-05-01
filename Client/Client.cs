@@ -16,7 +16,9 @@ namespace Client
             Console.WriteLine("Press any key to start ...");
             Console.ReadKey();
             ComparatorServiceClient comparatorService = new ComparatorServiceClient();
+            comparatorService.joinToServer();
 
+            /*
             String fileName = "test.txt";
             var stream = comparatorService.downloadFile(fileName);
 
@@ -35,7 +37,7 @@ namespace Client
             using (var fileStream = File.OpenWrite(filePathRoot + fileName))
             {
                 fileStream.Write(bytes, 0, bytes.Length);
-            }
+            }*/
 
             //File.WriteAllText(, fileContent);
             Console.WriteLine("Plik zapisany... ");
