@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Server</RootNamespace>
     <AssemblyName>Server</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -41,30 +42,30 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparatorServer.cs" />
-    <Compile Include="StartForm.cs">
+    <Compile Include="forms\StartForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StartForm.Designer.cs">
+    <Compile Include="forms\StartForm.Designer.cs">
       <DependentUpon>StartForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MonitorForm.cs">
+    <Compile Include="forms\MonitorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MonitorForm.Designer.cs">
+    <Compile Include="forms\MonitorForm.Designer.cs">
       <DependentUpon>MonitorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MonitorForm.resx">
+    <Compile Include="view\WorkerView.cs" />
+    <EmbeddedResource Include="forms\MonitorForm.resx">
       <DependentUpon>MonitorForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="StartForm.resx">
+    <EmbeddedResource Include="forms\StartForm.resx">
       <DependentUpon>StartForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -75,6 +76,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\DataSources\Server.datasource" />
     <None Include="Properties\Settings.settings">

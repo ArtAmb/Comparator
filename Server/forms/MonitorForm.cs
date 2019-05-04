@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Server.view;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using WcfServiceLibrary1;
@@ -20,13 +22,29 @@ namespace Server
             InitializeComponent();
 
             dataDTO.AllClients.CollectionChanged += AllClients_CollectionChanged;
+            dataDTO.UniquePairsOfFilesToCompare.CollectionChanged += UniquePairsOfFilesToCompare_CollectionChanged;
             dataDTO.LogMessages.CollectionChanged += LogMessages_CollectionChanged;
+        }
+
+        private void UniquePairsOfFilesToCompare_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.pairOfUniqueFilesView.DataSource = null;
+            this.pairOfUniqueFilesView.DataSource = DataContainer.read().UniquePairsOfFilesToCompare;
         }
 
         private void AllClients_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            this.workersView.DataSource = null;
-            this.workersView.DataSource = DataContainer.read().AllClients;
+            if (InvokeRequired)
+                Invoke(new Action(() =>
+                {
+                    AllClients_CollectionChanged(sender, e);
+                }));
+            else
+            {
+                this.workersView.DataSource = null;
+                this.workersView.DataSource = DataContainer.read().AllClients.Select( el => new WorkerView(el)).ToList();
+            }
+
         }
 
         private void LogMessages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -38,7 +56,7 @@ namespace Server
         {
             this.allFilesView.DataSource = DataContainer.read().AllFiles;
             this.pairOfUniqueFilesView.DataSource = DataContainer.read().UniquePairsOfFilesToCompare;
-            this.workersView.DataSource = DataContainer.read().AllClients;
+            this.workersView.DataSource = DataContainer.read().AllClients.Select(el => new WorkerView(el)).ToList();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)

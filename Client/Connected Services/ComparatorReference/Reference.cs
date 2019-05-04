@@ -16,28 +16,19 @@ namespace Client.ComparatorReference {
     public interface IComparatorService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/joinToServer", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/joinToServerResponse")]
-        void joinToServer();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/joinToServer", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/joinToServerResponse")]
-        System.Threading.Tasks.Task joinToServerAsync();
+        string joinToServer();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompare", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompareResponse")]
-        WcfServiceLibrary1.FilesToCompare fetchFilesToCompare();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompare", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompareResponse")]
-        System.Threading.Tasks.Task<WcfServiceLibrary1.FilesToCompare> fetchFilesToCompareAsync();
+        WcfServiceLibrary1.FilesToCompare fetchFilesToCompare(string uuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/downloadFile", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/downloadFileResponse")]
         System.IO.Stream downloadFile(string fileName);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/downloadFile", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/downloadFileResponse")]
-        System.Threading.Tasks.Task<System.IO.Stream> downloadFileAsync(string fileName);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/finishComparing", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/finishComparingResponse")]
         void finishComparing(WcfServiceLibrary1.ComparingResult comparingResult);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/finishComparing", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/finishComparingResponse")]
-        System.Threading.Tasks.Task finishComparingAsync(WcfServiceLibrary1.ComparingResult comparingResult);
+        [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/heartbeat", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/heartbeatResponse")]
+        void heartbeat(string uuid);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -67,36 +58,24 @@ namespace Client.ComparatorReference {
                 base(binding, remoteAddress) {
         }
         
-        public void joinToServer() {
-            base.Channel.joinToServer();
+        public string joinToServer() {
+            return base.Channel.joinToServer();
         }
         
-        public System.Threading.Tasks.Task joinToServerAsync() {
-            return base.Channel.joinToServerAsync();
-        }
-        
-        public WcfServiceLibrary1.FilesToCompare fetchFilesToCompare() {
-            return base.Channel.fetchFilesToCompare();
-        }
-        
-        public System.Threading.Tasks.Task<WcfServiceLibrary1.FilesToCompare> fetchFilesToCompareAsync() {
-            return base.Channel.fetchFilesToCompareAsync();
+        public WcfServiceLibrary1.FilesToCompare fetchFilesToCompare(string uuid) {
+            return base.Channel.fetchFilesToCompare(uuid);
         }
         
         public System.IO.Stream downloadFile(string fileName) {
             return base.Channel.downloadFile(fileName);
         }
         
-        public System.Threading.Tasks.Task<System.IO.Stream> downloadFileAsync(string fileName) {
-            return base.Channel.downloadFileAsync(fileName);
-        }
-        
         public void finishComparing(WcfServiceLibrary1.ComparingResult comparingResult) {
             base.Channel.finishComparing(comparingResult);
         }
         
-        public System.Threading.Tasks.Task finishComparingAsync(WcfServiceLibrary1.ComparingResult comparingResult) {
-            return base.Channel.finishComparingAsync(comparingResult);
+        public void heartbeat(string uuid) {
+            base.Channel.heartbeat(uuid);
         }
     }
 }

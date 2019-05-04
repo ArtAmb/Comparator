@@ -8,6 +8,6 @@ namespace WcfServiceLibrary1
 {
     public enum ComparingState
     {
-        NEW, IN_PROGESS, COMPARED
+        NEW, IN_PROGRESS, COMPARED
     }
 }

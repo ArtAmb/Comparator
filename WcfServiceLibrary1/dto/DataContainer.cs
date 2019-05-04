@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,16 +45,18 @@ namespace WcfServiceLibrary1
     {
         private String pathToFiles;
         private List<FileToCompare> allFiles;
-        private List<FilesToCompare> uniquePairsOfFilesToCompare;
+        private ObservableCollection<FilesToCompare> uniquePairsOfFilesToCompare;
         private ObservableCollection<string> logMessages = new ObservableCollection<string>();
         //private Dictionary<string, Worker> allClients = new Dictionary<string, Worker>();
+
         private ObservableCollection<Worker> allClients = new ObservableCollection<Worker>();
 
 
         public string PathToFiles { get => pathToFiles; set => pathToFiles = value; }
         public List<FileToCompare> AllFiles { get => allFiles; set => allFiles = value; }
-        public List<FilesToCompare> UniquePairsOfFilesToCompare { get => uniquePairsOfFilesToCompare; set => uniquePairsOfFilesToCompare = value; }
         public ObservableCollection<string> LogMessages { get => logMessages; }
+      
         public ObservableCollection<Worker> AllClients { get => allClients; }
+        public ObservableCollection<FilesToCompare> UniquePairsOfFilesToCompare { get => uniquePairsOfFilesToCompare; set => uniquePairsOfFilesToCompare = value; }
     }
 }

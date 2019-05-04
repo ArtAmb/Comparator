@@ -16,5 +16,16 @@ namespace Server
         public string FileName { get => fileName; set => fileName = value; }
         public string Path { get => path; set => path = value; }
         public string Md5Sum { get => md5Sum; set => md5Sum = value; }
+
+        public FileToCompare()
+        {
+
+        }
+
+        public FileToCompare(String fileName, String md5)
+        {
+            this.fileName = fileName;
+            this.md5Sum = md5;
+        }
     }
 }

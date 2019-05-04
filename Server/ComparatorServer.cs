@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Threading;
 using WcfServiceLibrary1;
 
 namespace Server
@@ -49,12 +52,38 @@ namespace Server
 
             DataDTO data = new DataDTO();
             data.PathToFiles = directoryWithFiles;
-            data.UniquePairsOfFilesToCompare = UniquePairsOfFilesToCompare;
+            data.UniquePairsOfFilesToCompare = new ObservableCollection<FilesToCompare>(UniquePairsOfFilesToCompare);
             data.AllFiles = AllFiles;
 
             DataContainer.loadData(data);
 
             startHosting();
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(5000);
+                    DataContainer.read().AllClients.Where(client =>
+                     {
+                         TimeSpan timeDiff = DateTime.Now - client.LastTime;
+                         return timeDiff.TotalSeconds > 5;
+                     }).ToList().ForEach(client =>
+                     {
+                         if (client.CurrentComparingPair != null)
+                         {
+                             var pair = DataContainer.read().UniquePairsOfFilesToCompare
+                             .Where(pairOfFiles => pairOfFiles.Id.Equals(client.CurrentComparingPair))
+                             .First();
+
+                             if (ComparingState.IN_PROGRESS.Equals(pair.ComparingState))
+                                 pair.ComparingState = ComparingState.NEW;
+                         }
+
+                         DataContainer.read().AllClients.Remove(client);
+                     });
+
+                }
+            }).Start();
         }
 
         private void loadFiles(string directoryWithFiles)
@@ -78,8 +107,12 @@ namespace Server
                 for (int j = i + 1; j < AllFiles.Count; ++j)
                 {
                     FilesToCompare filesToCompare = new FilesToCompare();
+                    filesToCompare.Id = Guid.NewGuid().ToString();
                     filesToCompare.File1MD5 = AllFiles[i].Md5Sum;
+                    filesToCompare.FileName1 = AllFiles[i].FileName;
+
                     filesToCompare.File2MD5 = AllFiles[j].Md5Sum;
+                    filesToCompare.FileName2 = AllFiles[j].FileName;
 
                     UniquePairsOfFilesToCompare.Add(filesToCompare);
                 }

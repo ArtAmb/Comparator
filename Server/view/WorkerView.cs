@@ -1,13 +1,12 @@
-﻿using Server;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using WcfServiceLibrary1;
 
-namespace WcfServiceLibrary1
+namespace Server.view
 {
-    public class Worker
+    public class WorkerView
     {
         private String ip;
         private String port;
@@ -16,14 +15,22 @@ namespace WcfServiceLibrary1
 
         private DateTime lastTime;
 
-        private List<FileToCompare> ownedFiles = new List<FileToCompare>();
-
-      
+        public string Ip { get => ip; set => ip = value; }
         public string Port { get => port; set => port = value; }
-        public List<FileToCompare> OwnedFiles { get => ownedFiles; }
         public string Uuid { get => uuid; set => uuid = value; }
+
         public DateTime LastTime { get => lastTime; set => lastTime = value; }
         public string CurrentComparingPair { get => currentComparingPair; set => currentComparingPair = value; }
-        public string Ip { get => ip; set => ip = value; }
+
+        public WorkerView(Worker worker)
+        {
+            this.ip = worker.Ip;
+            this.port = worker.Port;
+            this.uuid = worker.Uuid;
+            this.currentComparingPair = worker.CurrentComparingPair;
+
+            this.lastTime = worker.LastTime;
+        }
+
     }
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7a67e84d-d0a2-4911-b04a-2cf1091f4c04" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6370d450-9d6a-46cf-9608-2a331130acd9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
-    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
     <EnableDataBinding>true</EnableDataBinding>
     <ExcludedTypes />
     <ImportXmlTypes>false</ImportXmlTypes>
@@ -22,13 +21,13 @@
     <MetadataSource Address="http://localhost:8000/ComparatorService" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ComparatorService.wsdl" MetadataType="Wsdl" ID="9ac2deeb-335d-449b-8fe8-954b8f3a58a5" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?wsdl=wsdl0" />
-    <MetadataFile FileName="ComparatorService.xsd" MetadataType="Schema" ID="806e6902-579e-4468-a630-b9f4cc8dc02a" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd1" />
-    <MetadataFile FileName="ComparatorService1.xsd" MetadataType="Schema" ID="d8cb28b3-e81d-43a1-83ec-6dd12d2a291a" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd3" />
-    <MetadataFile FileName="ComparatorService2.xsd" MetadataType="Schema" ID="3bc0a407-bf7f-4c61-8c84-140aa097b46d" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd2" />
-    <MetadataFile FileName="ComparatorService1.wsdl" MetadataType="Wsdl" ID="5bd91d23-7ff3-434b-8235-ecffe2fd3b3f" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?wsdl" />
-    <MetadataFile FileName="ComparatorService.disco" MetadataType="Disco" ID="b8a96d12-fa41-4b0e-889f-9f1176fa3200" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?disco" />
-    <MetadataFile FileName="ComparatorService3.xsd" MetadataType="Schema" ID="9051e391-eefa-4c49-9b21-fbf422df50cd" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd0" />
+    <MetadataFile FileName="ComparatorService.wsdl" MetadataType="Wsdl" ID="fac271e2-b179-4956-8417-f0275ef34f5c" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?wsdl=wsdl0" />
+    <MetadataFile FileName="ComparatorService.xsd" MetadataType="Schema" ID="bcbb32c7-0527-407c-80e9-84514bd832fd" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd1" />
+    <MetadataFile FileName="ComparatorService1.xsd" MetadataType="Schema" ID="75c4e257-7db5-4b98-9ed6-06f657989332" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd3" />
+    <MetadataFile FileName="ComparatorService2.xsd" MetadataType="Schema" ID="33e93e8d-6b04-44be-98f6-21c2a12a76c0" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd2" />
+    <MetadataFile FileName="ComparatorService1.wsdl" MetadataType="Wsdl" ID="ccd92ac1-c1e6-46f1-a34d-8d8749278730" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?wsdl" />
+    <MetadataFile FileName="ComparatorService.disco" MetadataType="Disco" ID="91e9c0fb-bb7e-4569-8832-5ce683f44ff0" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?disco" />
+    <MetadataFile FileName="ComparatorService3.xsd" MetadataType="Schema" ID="45f2a412-3844-4c28-a6e1-39a80ef81086" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

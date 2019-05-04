@@ -9,12 +9,16 @@
   </xs:element>
   <xs:element name="joinToServerResponse">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element minOccurs="0" name="joinToServerResult" nillable="true" type="xs:string" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="fetchFilesToCompare">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uuid" nillable="true" type="xs:string" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="fetchFilesToCompareResponse">
@@ -46,6 +50,18 @@
     </xs:complexType>
   </xs:element>
   <xs:element name="finishComparingResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="heartbeat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="uuid" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="heartbeatResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
