@@ -29,7 +29,8 @@ namespace Server
         private void UniquePairsOfFilesToCompare_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.pairOfUniqueFilesView.DataSource = null;
-            this.pairOfUniqueFilesView.DataSource = DataContainer.read().UniquePairsOfFilesToCompare;
+            this.pairOfUniqueFilesView.DataSource = DataContainer.read().UniquePairsOfFilesToCompare.Select(el => new PairView(el)).ToList();
+            this.pairOfUniqueFilesView.Refresh();
         }
 
         private void AllClients_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -43,6 +44,7 @@ namespace Server
             {
                 this.workersView.DataSource = null;
                 this.workersView.DataSource = DataContainer.read().AllClients.Select( el => new WorkerView(el)).ToList();
+                this.workersView.Refresh();
             }
 
         }
@@ -55,7 +57,7 @@ namespace Server
         private void MonitorForm_Load(object sender, EventArgs e)
         {
             this.allFilesView.DataSource = DataContainer.read().AllFiles;
-            this.pairOfUniqueFilesView.DataSource = DataContainer.read().UniquePairsOfFilesToCompare;
+            this.pairOfUniqueFilesView.DataSource = DataContainer.read().UniquePairsOfFilesToCompare.Select(el => new PairView(el)).ToList();
             this.workersView.DataSource = DataContainer.read().AllClients.Select(el => new WorkerView(el)).ToList();
         }
 
@@ -102,6 +104,11 @@ namespace Server
             w.Ip = "Dzialam";
 
             DataContainer.read().AllClients.Add(w);
+        }
+
+        private void MonitorForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            comparatorServer.finish();
         }
     }
 }

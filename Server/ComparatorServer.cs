@@ -26,6 +26,7 @@ namespace Server
         }
 
         private Boolean running = false;
+        private Thread workerConnectionControllerThread;
         private List<FileToCompare> allFiles = new List<FileToCompare>();
         private List<FilesToCompare> uniquePairsOfFilesToCompare = new List<FilesToCompare>();
 
@@ -34,7 +35,32 @@ namespace Server
 
         private ComparatorServer()
         {
+            this.workerConnectionControllerThread = new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(5000);
+                    DataContainer.read().AllClients.Where(client =>
+                    {
+                        TimeSpan timeDiff = DateTime.Now - client.LastTime;
+                        return timeDiff.TotalSeconds > 5;
+                    }).ToList().ForEach(client =>
+                    {
+                        if (client.CurrentComparingPair != null)
+                        {
+                            var pair = DataContainer.read().UniquePairsOfFilesToCompare
+                            .Where(pairOfFiles => pairOfFiles.Id.Equals(client.CurrentComparingPair))
+                            .First();
 
+                            if (ComparingState.IN_PROGRESS.Equals(pair.ComparingState))
+                                pair.ComparingState = ComparingState.NEW;
+                        }
+
+                        DataContainer.read().AllClients.Remove(client);
+                    });
+
+                }
+            });
         }
 
         public void start(string directoryWithFiles)
@@ -58,32 +84,7 @@ namespace Server
             DataContainer.loadData(data);
 
             startHosting();
-            new Thread(() =>
-            {
-                while (true)
-                {
-                    Thread.Sleep(5000);
-                    DataContainer.read().AllClients.Where(client =>
-                     {
-                         TimeSpan timeDiff = DateTime.Now - client.LastTime;
-                         return timeDiff.TotalSeconds > 5;
-                     }).ToList().ForEach(client =>
-                     {
-                         if (client.CurrentComparingPair != null)
-                         {
-                             var pair = DataContainer.read().UniquePairsOfFilesToCompare
-                             .Where(pairOfFiles => pairOfFiles.Id.Equals(client.CurrentComparingPair))
-                             .First();
-
-                             if (ComparingState.IN_PROGRESS.Equals(pair.ComparingState))
-                                 pair.ComparingState = ComparingState.NEW;
-                         }
-
-                         DataContainer.read().AllClients.Remove(client);
-                     });
-
-                }
-            }).Start();
+            workerConnectionControllerThread.Start();
         }
 
         private void loadFiles(string directoryWithFiles)
@@ -144,7 +145,10 @@ namespace Server
             }
         }
 
-
+        public void finish()
+        {
+            workerConnectionControllerThread.Abort();
+        }
 
 
     }

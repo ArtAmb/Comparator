@@ -153,6 +153,7 @@
             this.Controls.Add(this.helloWorldLabel);
             this.Name = "MonitorForm";
             this.Text = "Rozproszony komparator plików";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MonitorForm_FormClosed);
             this.Load += new System.EventHandler(this.MonitorForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.allFilesView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pairOfUniqueFilesView)).EndInit();

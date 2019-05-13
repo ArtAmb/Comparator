@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="ComparatorService.cs" />
     <Compile Include="Connected Services\ComparatorReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -55,7 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\ComparatorReference\ComparatorService.wsdl" />
+    <None Include="Connected Services\ComparatorReference\ComparatorService.wsdl">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\ComparatorReference\ComparatorService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -94,7 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WcfServiceLibrary1\ComparatorServiceLibrary.csproj">
-      <Project>{e6230be5-e3b6-4fdd-999f-7703e5e2d114}</Project>
+      <Project>{E6230BE5-E3B6-4FDD-999F-7703E5E2D114}</Project>
       <Name>ComparatorServiceLibrary</Name>
     </ProjectReference>
   </ItemGroup>

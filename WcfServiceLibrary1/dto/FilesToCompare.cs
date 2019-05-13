@@ -14,6 +14,8 @@ namespace WcfServiceLibrary1
         ComparingResult comparingResult;
 
         ComparingState comparingState;
+        private String comparingResultFile;
+
 
         public string File1MD5 { get => file1MD5; set => file1MD5 = value; }
         public string File2MD5 { get => file2MD5; set => file2MD5 = value; }
@@ -22,5 +24,6 @@ namespace WcfServiceLibrary1
         public string FileName1 { get => fileName1; set => fileName1 = value; }
         public string FileName2 { get => fileName2; set => fileName2 = value; }
         public string Id { get => id; set => id = value; }
+        public string ComparingResultFile { get => comparingResultFile; set => comparingResultFile = value; }
     }
 }

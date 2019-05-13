@@ -3,6 +3,9 @@ using System.Text;
 using System.IO;
 using Client.ComparatorReference;
 using System.Threading;
+using System.Collections.Generic;
+using WcfServiceLibrary1;
+using System.Linq;
 
 namespace Client
 {
@@ -13,6 +16,7 @@ namespace Client
         private ComparatorServiceClient comparatorService;
         private Thread heartbeatThread;
         string uuid;
+        private Comparator comparator = new Comparator();
 
         public ClientProgram()
         {
@@ -32,29 +36,58 @@ namespace Client
         {
             Console.WriteLine("Press any key to start ...");
             Console.ReadKey();
-            
+
             this.uuid = comparatorService.joinToServer();
             heartbeatThread.Start();
 
-            WcfServiceLibrary1.FilesToCompare filesToCompare = comparatorService.fetchFilesToCompare(uuid);
-            if(filesToCompare == null)
+            FilesToCompare filesToCompare = comparatorService.fetchFilesToCompare(uuid);
+            if (filesToCompare == null)
             {
-                Console.WriteLine("Brak plikow to porownania....");
+                Console.WriteLine("Brak plikow do porownania....");
                 return;
             }
 
-            downloadFile(filesToCompare.FileName1);
-            downloadFile(filesToCompare.FileName2);
+            String fileName1 = downloadFile(filesToCompare.FileName1);
+            String fileName2 = downloadFile(filesToCompare.FileName2);
+
+            ComparingResult comparingResult = compare(filesToCompare, fileName1, fileName2);
 
 
+            comparatorService.finishComparing(comparingResult);
 
-            //File.WriteAllText(, fileContent);
-            Console.WriteLine("Plik zapisany... ");
             Console.ReadKey();
             heartbeatThread.Abort();
         }
 
-        private void downloadFile(String fileName)
+        private ComparingResult compare(FilesToCompare filesToCompare, String fileName1, String fileName2)
+        {
+            List<Result> commonSentences = comparator.compare(filePathRoot + fileName1, filePathRoot + fileName2);
+
+            ComparingResult result = new ComparingResult();
+            result.PairId = filesToCompare.Id;
+            result.CommonSentences = commonSentences.Select(sen =>
+            {
+                var tmp = new CommonSentence();
+                tmp.File1 = mapToWSDTO(sen.File1);
+                tmp.File2 = mapToWSDTO(sen.File2);
+
+                return tmp;
+            }).ToList();
+
+            return result;
+        }
+
+        private WcfServiceLibrary1.SentenceIndexes mapToWSDTO(SentenceIndexes file)
+        {
+            var tmp = new WcfServiceLibrary1.SentenceIndexes();
+
+            tmp.FirstWordIndex = file.FirstWordIndex;
+            tmp.LastWordIndexIndex = file.LastWordIndex;
+
+            return tmp;
+        }
+
+        private String downloadFile(String fileName)
         {
             var stream = comparatorService.downloadFile(fileName);
 
@@ -70,10 +103,15 @@ namespace Client
                 Directory.CreateDirectory(filePathRoot);
             }
 
-            using (var fileStream = File.OpenWrite(filePathRoot + Guid.NewGuid().ToString() + ".txt"))
+            String newFileName = Guid.NewGuid().ToString() + ".txt";
+            using (var fileStream = File.OpenWrite(filePathRoot + newFileName))
             {
                 fileStream.Write(bytes, 0, bytes.Length);
             }
+
+            Console.WriteLine("Plik '" + fileName + "' zapisany");
+
+            return newFileName;
         }
     }
 }

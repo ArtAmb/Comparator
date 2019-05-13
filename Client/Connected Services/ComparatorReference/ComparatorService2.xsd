@@ -8,17 +8,41 @@
       <xs:element minOccurs="0" name="File2MD5" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="FileName1" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="FileName2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="FilesToCompare" nillable="true" type="tns:FilesToCompare" />
   <xs:complexType name="ComparingResult">
-    <xs:sequence />
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CommonSenteces" nillable="true" type="tns:ArrayOfCommonSentence" />
+      <xs:element minOccurs="0" name="PairId" nillable="true" type="xs:string" />
+    </xs:sequence>
   </xs:complexType>
   <xs:element name="ComparingResult" nillable="true" type="tns:ComparingResult" />
+  <xs:complexType name="ArrayOfCommonSentence">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommonSentence" nillable="true" type="tns:CommonSentence" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommonSentence" nillable="true" type="tns:ArrayOfCommonSentence" />
+  <xs:complexType name="CommonSentence">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="File1" nillable="true" type="tns:SentenceIndexes" />
+      <xs:element minOccurs="0" name="File2" nillable="true" type="tns:SentenceIndexes" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommonSentence" nillable="true" type="tns:CommonSentence" />
+  <xs:complexType name="SentenceIndexes">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FirstWordIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="LastWordIndexIndex" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SentenceIndexes" nillable="true" type="tns:SentenceIndexes" />
   <xs:simpleType name="ComparingState">
     <xs:restriction base="xs:string">
       <xs:enumeration value="NEW" />
-      <xs:enumeration value="IN_PROGESS" />
+      <xs:enumeration value="IN_PROGRESS" />
       <xs:enumeration value="COMPARED" />
     </xs:restriction>
   </xs:simpleType>

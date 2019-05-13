@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="view\PairView.cs" />
     <Compile Include="view\WorkerView.cs" />
     <EmbeddedResource Include="forms\MonitorForm.resx">
       <DependentUpon>MonitorForm.cs</DependentUpon>
