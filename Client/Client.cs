@@ -20,13 +20,26 @@ namespace Client
 
         public ClientProgram()
         {
+            initClient();
+        }
+
+        private void initClient()
+        {
             comparatorService = new ComparatorServiceClient();
             heartbeatThread = new Thread(() =>
             {
                 while (true)
                 {
+                    try { 
                     Thread.Sleep(1000);
                     comparatorService.heartbeat(uuid);
+                    } catch(Exception ex)
+                    {
+                        heartbeatThread.Abort();
+                        heartbeatThread = null;
+                        comparatorService.Abort();
+                        comparatorService = null;
+                    }
                 }
 
             });
@@ -34,29 +47,79 @@ namespace Client
 
         public void start()
         {
-            Console.WriteLine("Press any key to start ...");
-            Console.ReadKey();
+            while(true) {
+                try
+                {
+                    doClientAction();
+                } catch(Exception ex)
+                {
+                    heartbeatThread.Abort();
+                    Console.WriteLine(ex);
+                    Console.WriteLine("");
+                    Console.WriteLine("");
+                    Console.WriteLine("Something wrong happen with server ... Restart....");
+                    Console.WriteLine("##################################################");
+                    Console.WriteLine("##################################################");
+                    Console.WriteLine("##################################################");
+                    Console.WriteLine("##################################################");
+                    Console.WriteLine("");
+                    
+                }
+            }
+        }
 
-            this.uuid = comparatorService.joinToServer();
+        private void doClientAction()
+        {
+            this.uuid = joinToServer();
             heartbeatThread.Start();
 
-            FilesToCompare filesToCompare = comparatorService.fetchFilesToCompare(uuid);
-            if (filesToCompare == null)
+            while (true)
             {
-                Console.WriteLine("Brak plikow do porownania....");
-                return;
+                FilesToCompare filesToCompare = comparatorService.fetchFilesToCompare(uuid);
+                if (filesToCompare == null)
+                {
+                    Console.WriteLine("Brak plikow do porownania....");
+                    Thread.Sleep(1000);
+                    continue;
+                }
+
+                String fileName1 = downloadFile(filesToCompare.FileName1);
+                String fileName2 = downloadFile(filesToCompare.FileName2);
+
+                ComparingResult comparingResult = compare(filesToCompare, fileName1, fileName2);
+
+
+                comparatorService.finishComparing(comparingResult);
+            }
+        }
+
+        private String joinToServer()
+        {
+            while (true)
+            {
+                String uuid = tryToJoinToServer();
+                if (uuid != null)
+                    return uuid;
+
+                Thread.Sleep(1000);
             }
 
-            String fileName1 = downloadFile(filesToCompare.FileName1);
-            String fileName2 = downloadFile(filesToCompare.FileName2);
+        }
 
-            ComparingResult comparingResult = compare(filesToCompare, fileName1, fileName2);
+        private String tryToJoinToServer()
+        {
+            try
+            {
+                initClient();
+                return comparatorService.joinToServer();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
 
 
-            comparatorService.finishComparing(comparingResult);
-
-            Console.ReadKey();
-            heartbeatThread.Abort();
         }
 
         private ComparingResult compare(FilesToCompare filesToCompare, String fileName1, String fileName2)
