@@ -34,6 +34,9 @@ namespace Server
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.minSentenceWordsNumberInput = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.minSentenceWordsNumberInput)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -97,11 +100,29 @@ namespace Server
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(211, 101);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(158, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Minimalna liczba s³ów w zdaniu ";
+            // 
+            // minSentenceWordsNumberInput
+            // 
+            this.minSentenceWordsNumberInput.Location = new System.Drawing.Point(384, 99);
+            this.minSentenceWordsNumberInput.Name = "minSentenceWordsNumberInput";
+            this.minSentenceWordsNumberInput.Size = new System.Drawing.Size(120, 20);
+            this.minSentenceWordsNumberInput.TabIndex = 10;
+            // 
             // StartForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(713, 463);
+            this.Controls.Add(this.minSentenceWordsNumberInput);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -112,6 +133,7 @@ namespace Server
             this.Name = "StartForm";
             this.Text = "Rozproszony komparator plików";
             this.Load += new System.EventHandler(this.StartForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.minSentenceWordsNumberInput)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -124,6 +146,8 @@ namespace Server
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown minSentenceWordsNumberInput;
     }
 }
 

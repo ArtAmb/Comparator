@@ -4,13 +4,15 @@
   <xs:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
   <xs:element name="joinToServer">
     <xs:complexType>
-      <xs:sequence />
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="joinToServerCommand" nillable="true" type="q1:JoinToServerCommand" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="joinToServerResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="joinToServerResult" nillable="true" type="xs:string" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="joinToServerResult" nillable="true" type="q2:ServerOptions" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -24,7 +26,7 @@
   <xs:element name="fetchFilesToCompareResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="fetchFilesToCompareResult" nillable="true" type="q1:FilesToCompare" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="fetchFilesToCompareResult" nillable="true" type="q3:FilesToCompare" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -38,14 +40,14 @@
   <xs:element name="downloadFileResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.microsoft.com/Message" name="downloadFileResult" type="q2:StreamBody" />
+        <xs:element xmlns:q4="http://schemas.microsoft.com/Message" name="downloadFileResult" type="q4:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="finishComparing">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="comparingResult" nillable="true" type="q3:ComparingResult" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" minOccurs="0" name="comparingResult" nillable="true" type="q5:ComparingResult" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

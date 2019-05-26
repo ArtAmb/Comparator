@@ -7,7 +7,7 @@ namespace WcfServiceLibrary1
 
     [ServiceContract(Namespace = "http://achilles.tu.kielce.pl")]    public interface IComparatorService
     {
-        [OperationContract]        String joinToServer();
+        [OperationContract]        ServerOptions joinToServer(JoinToServerCommand joinToServerCommand);
 
         [OperationContract]        FilesToCompare fetchFilesToCompare(String uuid);
 

@@ -41,7 +41,12 @@ namespace Client
     public class Comparator
     {
 
-        private static int MIN_SENTENCE_LENGTH = 1;
+        private int MIN_SENTENCE_LENGTH = 1;
+
+        public Comparator(int minSentenceLength)
+        {
+            this.MIN_SENTENCE_LENGTH = minSentenceLength - 1;
+        }
 
         public List<Result> compare(String pathToFile1, String pathToFile2)
         {
@@ -80,6 +85,10 @@ namespace Client
                         if (delta > MIN_SENTENCE_LENGTH)
                         {
                             result.Sentence = getSentence(allWordsOfFile1, result.File1);
+                            if(result.Sentence.Split(' ').Length < MIN_SENTENCE_LENGTH)
+                            {
+                                throw new Exception("WTF"); 
+                            }
                             commonSentences.Add(result);
                         }
                     }

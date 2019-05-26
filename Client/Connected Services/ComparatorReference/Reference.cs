@@ -16,7 +16,7 @@ namespace Client.ComparatorReference {
     public interface IComparatorService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/joinToServer", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/joinToServerResponse")]
-        string joinToServer();
+        WcfServiceLibrary1.ServerOptions joinToServer(WcfServiceLibrary1.JoinToServerCommand joinToServerCommand);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompare", ReplyAction="http://achilles.tu.kielce.pl/IComparatorService/fetchFilesToCompareResponse")]
         WcfServiceLibrary1.FilesToCompare fetchFilesToCompare(string uuid);
@@ -58,8 +58,8 @@ namespace Client.ComparatorReference {
                 base(binding, remoteAddress) {
         }
         
-        public string joinToServer() {
-            return base.Channel.joinToServer();
+        public WcfServiceLibrary1.ServerOptions joinToServer(WcfServiceLibrary1.JoinToServerCommand joinToServerCommand) {
+            return base.Channel.joinToServer(joinToServerCommand);
         }
         
         public WcfServiceLibrary1.FilesToCompare fetchFilesToCompare(string uuid) {

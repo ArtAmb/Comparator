@@ -72,7 +72,11 @@
     <None Include="Connected Services\ComparatorReference\ComparatorService3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Properties\DataSources\WcfServiceLibrary1.dto.ServerOptions.datasource" />
+    <None Include="Properties\DataSources\WcfServiceLibrary1.dto.ServerOptions1.datasource" />
+    <None Include="Properties\DataSources\WcfServiceLibrary1.dto.ServerOptions2.datasource" />
     <None Include="Properties\DataSources\WcfServiceLibrary1.FilesToCompare.datasource" />
+    <None Include="Properties\DataSources\WcfServiceLibrary1.ServerOptions.datasource" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

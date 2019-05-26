@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -100,7 +99,7 @@ namespace WcfServiceLibrary1
                 + "========================================"
                 + Environment.NewLine, comparingResultDescription);
 
-          
+
             var bytes = Encoding.ASCII.GetBytes(text);
             String filePathRoot = DataContainer.read().PathToFiles + @"\comparing_results";
             if (!Directory.Exists(filePathRoot))
@@ -109,13 +108,23 @@ namespace WcfServiceLibrary1
             }
 
             String newFileName = @"comparing_result_" + comparedPair.FileName1.Replace(".txt", "") + "#" + comparedPair.FileName2.Replace(".txt", "") + ".txt";
-            using (var fileStream = File.OpenWrite(filePathRoot + @"\" + newFileName))
+            String pathToFile = filePathRoot + @"\" + newFileName;
+            if (File.Exists(pathToFile))
+            {
+                File.Delete(pathToFile);
+            }
+            using (var fileStream = File.OpenWrite(pathToFile))
             {
                 fileStream.Write(bytes, 0, bytes.Length);
             }
 
             comparedPair.ComparingResultFile = newFileName;
             DataContainer.read().LogMessages.Add("Wynik porownania w pliku " + newFileName);
+
+            if (DataContainer.read().UniquePairsOfFilesToCompare.Where(pair => pair.ComparingResult == null).Count() == 0)
+            {
+                DataContainer.read().LogMessages.Add("Wszystkie pliki zostały porównane");
+            }
 
             var tmp = new FilesToCompare();
             tmp.Id = "REFRESH";
@@ -148,7 +157,7 @@ namespace WcfServiceLibrary1
 
         }
 
-        public String joinToServer()
+        public ServerOptions joinToServer(JoinToServerCommand command)
         {
             var netAddress = readEndpointNetAddress();
 
@@ -162,13 +171,17 @@ namespace WcfServiceLibrary1
 
             worker.Ip = szAddress;
             worker.Port = nPort.ToString();
-            worker.Uuid = System.Guid.NewGuid().ToString();
+            worker.Uuid = Guid.NewGuid().ToString();
             worker.LastTime = DateTime.Now;
+            worker.ProcessorInfo = command.ProcessorInfo;
 
             DataContainer.read().AllClients.Add(worker);
 
-            return worker.Uuid;
+            ServerOptions options = new ServerOptions();
+            options.ClientUUID = worker.Uuid;
+            options.MinWordsInSentence = DataContainer.read().MinWordsInSentence;
 
+            return options;
         }
 
         public void heartbeat(String uuid)

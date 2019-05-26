@@ -11,20 +11,39 @@ namespace Client
 {
     public class ClientProgram
     {
+        class DownloadedFile
+        {
+            private String serverFileName;
+            private String clientFileName;
+            private TimeSpan downloadingTime;
+
+            public string ServerFileName { get => serverFileName; set => serverFileName = value; }
+            public string ClientFileName { get => clientFileName; set => clientFileName = value; }
+            public TimeSpan DownloadingTime { get => downloadingTime; set => downloadingTime = value; }
+        }
 
         private string filePathRoot = @"client-files\";
         private ComparatorServiceClient comparatorService;
         private Thread heartbeatThread;
         string uuid;
-        private Comparator comparator = new Comparator();
+        string processorInfo;
+        private Comparator comparator;
+        private Dictionary<String, DownloadedFile> downloadedFilesByServerNames = new Dictionary<String, DownloadedFile>();
 
         public ClientProgram()
         {
+            try { 
+            this.processorInfo = new ProcessorService().getProcessorInfo();
+            } catch (Exception ex)
+            {
+                this.processorInfo = "";
+            }
             initClient();
         }
 
         private void initClient()
         {
+            downloadedFilesByServerNames.Clear();
             comparatorService = new ComparatorServiceClient();
             heartbeatThread = new Thread(() =>
             {
@@ -35,6 +54,7 @@ namespace Client
                     comparatorService.heartbeat(uuid);
                     } catch(Exception ex)
                     {
+                        Console.WriteLine(ex);
                         heartbeatThread.Abort();
                         heartbeatThread = null;
                         comparatorService.Abort();
@@ -70,7 +90,10 @@ namespace Client
 
         private void doClientAction()
         {
-            this.uuid = joinToServer();
+            var opts = joinToServer();
+            this.uuid = opts.ClientUUID;
+            this.comparator = new Comparator(opts.MinWordsInSentence);
+
             heartbeatThread.Start();
 
             while (true)
@@ -83,35 +106,42 @@ namespace Client
                     continue;
                 }
 
-                String fileName1 = downloadFile(filesToCompare.FileName1);
-                String fileName2 = downloadFile(filesToCompare.FileName2);
+                var file1 = downloadFile(filesToCompare.FileName1);
+                var file2 = downloadFile(filesToCompare.FileName2);
 
-                ComparingResult comparingResult = compare(filesToCompare, fileName1, fileName2);
+                ComparingResult comparingResult = compare(filesToCompare, file1, file2);
 
 
                 comparatorService.finishComparing(comparingResult);
             }
         }
 
-        private String joinToServer()
+        private ServerOptions joinToServer()
         {
             while (true)
             {
-                String uuid = tryToJoinToServer();
-                if (uuid != null)
-                    return uuid;
+                var serverOptions = tryToJoinToServer();
+               
+                if (serverOptions != null)
+                {
+                    return serverOptions;
+                }
+                   
 
                 Thread.Sleep(1000);
             }
 
         }
 
-        private String tryToJoinToServer()
+        private ServerOptions tryToJoinToServer()
         {
             try
             {
                 initClient();
-                return comparatorService.joinToServer();
+                JoinToServerCommand joinToServerCommand = new JoinToServerCommand();
+                joinToServerCommand.ProcessorInfo = processorInfo;
+
+                return comparatorService.joinToServer(joinToServerCommand);
             }
             catch (Exception e)
             {
@@ -122,8 +152,13 @@ namespace Client
 
         }
 
-        private ComparingResult compare(FilesToCompare filesToCompare, String fileName1, String fileName2)
+        private ComparingResult compare(FilesToCompare filesToCompare, DownloadedFile file1, DownloadedFile file2)
         {
+            String fileName1 = file1.ClientFileName;
+            String fileName2 = file2.ClientFileName;
+
+            DateTime startTime = DateTime.Now;
+            
             List<Result> commonSentences = comparator.compare(filePathRoot + fileName1, filePathRoot + fileName2);
 
             ComparingResult result = new ComparingResult();
@@ -136,6 +171,12 @@ namespace Client
 
                 return tmp;
             }).ToList();
+
+            result.ComparingTime = DateTime.Now - startTime;
+            result.SendStartTime = DateTime.Now;
+            result.File1DownloadingTime = file1.DownloadingTime;
+            result.File2DownloadingTime = file2.DownloadingTime;
+            result.ClientUUID = this.uuid;
 
             return result;
         }
@@ -150,8 +191,21 @@ namespace Client
             return tmp;
         }
 
-        private String downloadFile(String fileName)
+        private DownloadedFile downloadFile(String fileName)
         {
+            DownloadedFile downloadedFile; // = new DownloadedFile(); ?????
+            if (downloadedFilesByServerNames.TryGetValue(fileName, out downloadedFile))
+            {
+                DownloadedFile tmp = new DownloadedFile();
+                tmp.ServerFileName = downloadedFile.ServerFileName;
+                tmp.ClientFileName = downloadedFile.ClientFileName;
+                tmp.DownloadingTime = TimeSpan.Zero;
+
+                return tmp;
+            }
+
+
+            DateTime startTime = DateTime.Now;
             var stream = comparatorService.downloadFile(fileName);
 
             StreamReader reader = new StreamReader(stream);
@@ -159,7 +213,7 @@ namespace Client
             var bytes = Encoding.ASCII.GetBytes(fileContent);
 
 
-            Console.WriteLine("Zawartosc pobranego pliku: " + fileContent);
+            //Console.WriteLine("Zawartosc pobranego pliku: " + fileContent);
 
             if (!Directory.Exists(filePathRoot))
             {
@@ -174,7 +228,16 @@ namespace Client
 
             Console.WriteLine("Plik '" + fileName + "' zapisany");
 
-            return newFileName;
+           
+
+            downloadedFile = new DownloadedFile();
+            downloadedFile.ServerFileName = fileName;
+            downloadedFile.ClientFileName = newFileName;
+            downloadedFile.DownloadingTime = DateTime.Now - startTime;
+
+            downloadedFilesByServerNames.Add(fileName, downloadedFile);
+
+            return downloadedFile;
         }
     }
 }

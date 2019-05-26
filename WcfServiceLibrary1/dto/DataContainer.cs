@@ -43,6 +43,7 @@ namespace WcfServiceLibrary1
 
     public class DataDTO
     {
+        private int minWordsInSentence;
         private String pathToFiles;
         private List<FileToCompare> allFiles;
         private ObservableCollection<FilesToCompare> uniquePairsOfFilesToCompare;
@@ -58,5 +59,6 @@ namespace WcfServiceLibrary1
       
         public ObservableCollection<Worker> AllClients { get => allClients; }
         public ObservableCollection<FilesToCompare> UniquePairsOfFilesToCompare { get => uniquePairsOfFilesToCompare; set => uniquePairsOfFilesToCompare = value; }
+        public int MinWordsInSentence { get => minWordsInSentence; set => minWordsInSentence = value; }
     }
 }

@@ -16,6 +16,7 @@ namespace Server
         public StartForm()
         {
             InitializeComponent();
+            minSentenceWordsNumberInput.Value = 2;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -33,8 +34,17 @@ namespace Server
                 return;
             }
 
+            if(Decimal.ToInt32(minSentenceWordsNumberInput.Value) < 2 )
+            {
+                this.label2.Text = "Minimalna liczba s³ów w zdaniu to 2";
+                return;
+            }
 
-            comparatorServer.start(directoryWithFiles);
+            ComparatorServerInitDTO initDTO = new ComparatorServerInitDTO();
+            initDTO.DirectoryWithFiles = directoryWithFiles;
+            initDTO.MinSentenceWordsNumber = Decimal.ToInt32(minSentenceWordsNumberInput.Value);
+
+            comparatorServer.start(initDTO);
             new MonitorForm(this).Show();
             Hide();
         }

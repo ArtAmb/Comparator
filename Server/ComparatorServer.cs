@@ -11,6 +11,15 @@ using WcfServiceLibrary1;
 
 namespace Server
 {
+    public class ComparatorServerInitDTO
+    {
+        private string directoryWithFiles;
+        private int minSentenceWordsNumber;
+
+        public string DirectoryWithFiles { get => directoryWithFiles; set => directoryWithFiles = value; }
+        public int MinSentenceWordsNumber { get => minSentenceWordsNumber; set => minSentenceWordsNumber = value; }
+    }
+
     public class ComparatorServer
     {
         private static ComparatorServer instance;
@@ -63,7 +72,7 @@ namespace Server
             });
         }
 
-        public void start(string directoryWithFiles)
+        public void start(ComparatorServerInitDTO initDTO)
         {
             if (running)
                 return;
@@ -71,15 +80,16 @@ namespace Server
             running = true;
 
 
-            loadFiles(directoryWithFiles);
+            loadFiles(initDTO.DirectoryWithFiles);
 
             fillUniqueParisOfFilesToCompare();
 
 
             DataDTO data = new DataDTO();
-            data.PathToFiles = directoryWithFiles;
+            data.PathToFiles = initDTO.DirectoryWithFiles;
             data.UniquePairsOfFilesToCompare = new ObservableCollection<FilesToCompare>(UniquePairsOfFilesToCompare);
             data.AllFiles = AllFiles;
+            data.MinWordsInSentence = initDTO.MinSentenceWordsNumber;
 
             DataContainer.loadData(data);
 

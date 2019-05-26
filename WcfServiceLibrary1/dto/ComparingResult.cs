@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 namespace WcfServiceLibrary1
@@ -29,10 +30,23 @@ namespace WcfServiceLibrary1
     {
 
         private string pairId;
+        private string clientUUID;
+        private TimeSpan comparingTime;
         private List<CommonSentence> commonSentences;
+        private DateTime sendStartTime;
+        private TimeSpan file1DownloadingTime;
+        private TimeSpan file2DownloadingTime;
+        private TimeSpan sendingTime;
 
         public List<CommonSentence> CommonSentences { get => commonSentences; set => commonSentences = value; }
         public string PairId { get => pairId; set => pairId = value; }
+        public TimeSpan ComparingTime { get => comparingTime; set => comparingTime = value; }
+        
+        public TimeSpan File1DownloadingTime { get => file1DownloadingTime; set => file1DownloadingTime = value; }
+        public TimeSpan File2DownloadingTime { get => file2DownloadingTime; set => file2DownloadingTime = value; }
+        public DateTime SendStartTime { get => sendStartTime; set => sendStartTime = value; }
+        public TimeSpan SendingTime { get => sendingTime; set => sendingTime = value; }
+        public string ClientUUID { get => clientUUID; set => clientUUID = value; }
     }
 
 }

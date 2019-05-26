@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="JoinToServerCommand">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProcessorInfo" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JoinToServerCommand" nillable="true" type="tns:JoinToServerCommand" />
+  <xs:complexType name="ServerOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClientUUID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MinWordsInSentence" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ServerOptions" nillable="true" type="tns:ServerOptions" />
   <xs:complexType name="FilesToCompare">
     <xs:sequence>
       <xs:element minOccurs="0" name="ComparingResult" nillable="true" type="tns:ComparingResult" />
+      <xs:element minOccurs="0" name="ComparingResultFile" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ComparingState" type="tns:ComparingState" />
       <xs:element minOccurs="0" name="File1MD5" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="File2MD5" nillable="true" type="xs:string" />
@@ -14,8 +29,13 @@
   <xs:element name="FilesToCompare" nillable="true" type="tns:FilesToCompare" />
   <xs:complexType name="ComparingResult">
     <xs:sequence>
-      <xs:element minOccurs="0" name="CommonSenteces" nillable="true" type="tns:ArrayOfCommonSentence" />
+      <xs:element minOccurs="0" name="CommonSentences" nillable="true" type="tns:ArrayOfCommonSentence" />
+      <xs:element minOccurs="0" name="ComparingTime" type="ser:duration" />
+      <xs:element minOccurs="0" name="File1DownloadingTime" type="ser:duration" />
+      <xs:element minOccurs="0" name="File2DownloadingTime" type="ser:duration" />
       <xs:element minOccurs="0" name="PairId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendStartTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SendingTime" type="ser:duration" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ComparingResult" nillable="true" type="tns:ComparingResult" />

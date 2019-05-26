@@ -37,6 +37,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.workersView = new System.Windows.Forms.DataGridView();
             this.label3 = new System.Windows.Forms.Label();
+            this.generateSummaryBtn = new System.Windows.Forms.Button();
+            this.processorInfoBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.allFilesView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pairOfUniqueFilesView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.workersView)).BeginInit();
@@ -137,11 +139,33 @@
             this.label3.Text = "Workers";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
+            // generateSummaryBtn
+            // 
+            this.generateSummaryBtn.Location = new System.Drawing.Point(1003, 340);
+            this.generateSummaryBtn.Name = "generateSummaryBtn";
+            this.generateSummaryBtn.Size = new System.Drawing.Size(139, 23);
+            this.generateSummaryBtn.TabIndex = 13;
+            this.generateSummaryBtn.Text = "Generuj podsumowanie";
+            this.generateSummaryBtn.UseVisualStyleBackColor = true;
+            this.generateSummaryBtn.Click += new System.EventHandler(this.generateSummaryBtn_Click);
+            // 
+            // processorInfoBtn
+            // 
+            this.processorInfoBtn.Location = new System.Drawing.Point(16, 343);
+            this.processorInfoBtn.Name = "processorInfoBtn";
+            this.processorInfoBtn.Size = new System.Drawing.Size(122, 23);
+            this.processorInfoBtn.TabIndex = 14;
+            this.processorInfoBtn.Text = "Get processor info";
+            this.processorInfoBtn.UseVisualStyleBackColor = true;
+            this.processorInfoBtn.Click += new System.EventHandler(this.processorInfoBtn_Click);
+            // 
             // MonitorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1272, 704);
+            this.Controls.Add(this.processorInfoBtn);
+            this.Controls.Add(this.generateSummaryBtn);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.workersView);
             this.Controls.Add(this.textBox1);
@@ -174,5 +198,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.DataGridView workersView;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button generateSummaryBtn;
+        private System.Windows.Forms.Button processorInfoBtn;
     }
 }

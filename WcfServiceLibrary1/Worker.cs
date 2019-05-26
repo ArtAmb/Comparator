@@ -13,6 +13,7 @@ namespace WcfServiceLibrary1
         private String port;
         private String uuid;
         private String currentComparingPair;
+        private String processorInfo;
 
         private DateTime lastTime;
 
@@ -25,5 +26,6 @@ namespace WcfServiceLibrary1
         public DateTime LastTime { get => lastTime; set => lastTime = value; }
         public string CurrentComparingPair { get => currentComparingPair; set => currentComparingPair = value; }
         public string Ip { get => ip; set => ip = value; }
+        public string ProcessorInfo { get => processorInfo; set => processorInfo = value; }
     }
 }
