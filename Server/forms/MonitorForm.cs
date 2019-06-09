@@ -106,7 +106,7 @@ namespace Server
                 .Where(pairOfFiles => pairOfFiles.ComparingResult != null)
                 .Select(pair =>
                                 {
-                                    var client = getClient(pair.ComparingResult.ClientUUID);
+                                    var client = pair.ComparedBy; //getClient(pair.ComparingResult.ClientUUID);
                                     var result = pair.ComparingResult;
 
                                     return String.Join(@";",
@@ -115,11 +115,11 @@ namespace Server
                                         client.Ip,
                                         client.Port,
                                         client.ProcessorInfo.Replace(Environment.NewLine, ""),
-                                        result.ComparingTime.Milliseconds,
-                                        result.File1DownloadingTime.Milliseconds,
-                                        result.File2DownloadingTime.Milliseconds,
-                                        result.SendingTime.Milliseconds,
-                                        result.File1DownloadingTime.Milliseconds + result.File2DownloadingTime.Milliseconds + result.SendingTime.Milliseconds
+                                        result.ComparingTime.TotalMilliseconds,
+                                        result.File1DownloadingTime.TotalMilliseconds,
+                                        result.File2DownloadingTime.TotalMilliseconds,
+                                        result.SendingTime.TotalMilliseconds,
+                                        result.File1DownloadingTime.TotalMilliseconds + result.File2DownloadingTime.TotalMilliseconds + result.SendingTime.TotalMilliseconds
                                         );
                                 }).ToList();
 

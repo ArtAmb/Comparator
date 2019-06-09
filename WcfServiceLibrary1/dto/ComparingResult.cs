@@ -1,6 +1,8 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.ServiceModel;
 
 namespace WcfServiceLibrary1
 {
@@ -47,6 +49,16 @@ namespace WcfServiceLibrary1
         public DateTime SendStartTime { get => sendStartTime; set => sendStartTime = value; }
         public TimeSpan SendingTime { get => sendingTime; set => sendingTime = value; }
         public string ClientUUID { get => clientUUID; set => clientUUID = value; }
+    }
+
+    [MessageContract]
+    public class ComparingResultWithStreamRequest
+    {
+        [MessageHeader]
+        public ComparingResult comparingResult;
+
+        [MessageBodyMember]
+        public Stream commonSentencesStream;
     }
 
 }

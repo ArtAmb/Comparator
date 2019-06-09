@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using WcfServiceLibrary1;
 
@@ -14,41 +15,71 @@ namespace Server.forms
 {
     public partial class ComparingResultViewForm : Form
     {
-
+        Thread thread = null;
         public ComparingResultViewForm(FilesToCompare pair)
         {
             InitializeComponent();
-
+            errorLabel.Text = "Trwa ladowanie komponentu. Prosze czekac....";
             file1Name.Text = pair.FileName1;
             file2Name.Text = pair.FileName2;
 
-            String file1Path = DataContainer.read().PathToFiles + @"\" + pair.FileName1;
-            String file2Path = DataContainer.read().PathToFiles + @"\" + pair.FileName2;
-
-            String file1Content = loadFile(file1Path);
-            String file2Content = loadFile(file2Path);
-
-            int sentenceNumber = 1;
-
-            List<ComonSentenceView> commonSentencesView = pair.ComparingResult.CommonSentences.Select(comSen =>
+            thread = new Thread(() =>
             {
-                return new ComonSentenceView()
+
+                String file1Path = DataContainer.read().PathToFiles + @"\" + pair.FileName1;
+                String file2Path = DataContainer.read().PathToFiles + @"\" + pair.FileName2;
+
+                String file1Content = loadFile(file1Path);
+                String file2Content = loadFile(file2Path);
+                initFileContentBox(file1ContentBox, file1Content);
+                initFileContentBox(file2ContentBox, file2Content);
+
+                int sentenceNumber = 1;
+                var allWordsInFile1 = file1Content.Split(null);
+                List<ComonSentenceView> commonSentencesView = pair.ComparingResult.CommonSentences.Select(comSen =>
                 {
-                    Nr = sentenceNumber++,
-                    Sentence = getSentence(file1Content.Split(null), comSen.File1),
-                    F1StartIdx = comSen.File1.FirstWordIndex,
-                    F1EndIdx = comSen.File1.LastWordIndexIndex,
-                    F2StartIdx = comSen.File2.FirstWordIndex,
-                    F2EndIdx = comSen.File2.LastWordIndexIndex
-                };
-            }).ToList();
+                    return new ComonSentenceView()
+                    {
+                        Nr = sentenceNumber++,
+                        Sentence = getSentence(allWordsInFile1, comSen.File1),
+                        F1StartIdx = comSen.File1.FirstWordIndex,
+                        F1EndIdx = comSen.File1.LastWordIndexIndex,
+                        F2StartIdx = comSen.File2.FirstWordIndex,
+                        F2EndIdx = comSen.File2.LastWordIndexIndex
+                    };
+                }).ToList();
 
-            commonSentencesGridView.DataSource = commonSentencesView;
+                if (commonSentencesGridView.InvokeRequired)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        commonSentencesGridView.DataSource = commonSentencesView;
+                    }));
+                }
+                else
+                {
+                    commonSentencesGridView.DataSource = commonSentencesView;
+
+                }
+
+                if (errorLabel.InvokeRequired)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        errorLabel.Text = "Dane zostaly zaladowane";
+                    }));
+                }
+                else
+                {
+                    errorLabel.Text = "Dane zostaly zaladowane";
+                }
 
 
-            initFileContentBox(file1ContentBox, file1Content);
-            initFileContentBox(file2ContentBox, file2Content);
+                
+            });
 
+
+            thread.Start();
 
             //file1ContentBox.Find()
 
@@ -86,6 +117,22 @@ namespace Server.forms
 
         private void initFileContentBox(RichTextBox fileContentBox, String content)
         {
+            if (fileContentBox.InvokeRequired)
+            {
+                Invoke(new Action(() =>
+                {
+                    initFileContentBoxAction(fileContentBox, content);
+                }));
+            }
+            else
+            {
+                initFileContentBoxAction(fileContentBox, content);
+            }
+
+        }
+
+        private void initFileContentBoxAction(RichTextBox fileContentBox, String content)
+        {
             fileContentBox.BackColor = Color.White;
             fileContentBox.Text = content;
         }
@@ -96,8 +143,10 @@ namespace Server.forms
             {
                 clearSelection(file1ContentBox);
                 clearSelection(file2ContentBox);
-                
+
                 highlightCommonSentence(e.RowIndex);
+                file1ContentBox.ScrollToCaret();
+                file2ContentBox.ScrollToCaret();
             }
         }
 
@@ -207,11 +256,20 @@ namespace Server.forms
 
         private void checkAllCommonsBtn_Click(object sender, EventArgs e)
         {
-            for(int i = 0; i < commonSentencesGridView.RowCount; ++i)
+            for (int i = 0; i < commonSentencesGridView.RowCount; ++i)
             {
                 highlightCommonSentence(i);
             }
-            
+
         }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (thread != null)
+                thread.Abort();
+        }
+
     }
 }

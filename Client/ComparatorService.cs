@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Client
 {
@@ -19,7 +20,7 @@ namespace Client
         }
     }
 
-    public class Result
+    public class Result 
     {
 
         private SentenceIndexes file1;
@@ -90,7 +91,8 @@ namespace Client
                             {
                                 throw new Exception("WTF"); 
                             }
-                            commonSentences.Add(result);
+                            if (!commonSentences.Any(sen => contains(sen.File1, result.File1) && contains(sen.File2, result.File2)))
+                                commonSentences.Add(result);
                         }
                     }
                 }
@@ -98,6 +100,10 @@ namespace Client
             }
 
             return commonSentences;
+        }
+        private bool contains(SentenceIndexes indexes1, SentenceIndexes index2)
+        {
+            return indexes1.FirstWordIndex <= index2.FirstWordIndex && indexes1.LastWordIndex >= index2.LastWordIndex;
         }
 
         private String getSentence(String[] fileSetences, SentenceIndexes indexes)
@@ -119,5 +125,6 @@ namespace Client
             return reader.ReadToEnd().Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 
         }
+   
     }
 }

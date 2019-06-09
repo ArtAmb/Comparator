@@ -6,6 +6,9 @@ using System.Threading;
 using System.Collections.Generic;
 using WcfServiceLibrary1;
 using System.Linq;
+using System.Xml.Serialization;
+using System.Xml;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Client
 {
@@ -52,6 +55,7 @@ namespace Client
                     try { 
                     Thread.Sleep(1000);
                     comparatorService.heartbeat(uuid);
+                    Console.WriteLine("BUM BUM");
                     } catch(Exception ex)
                     {
                         Console.WriteLine(ex);
@@ -109,10 +113,13 @@ namespace Client
                 var file1 = downloadFile(filesToCompare.FileName1);
                 var file2 = downloadFile(filesToCompare.FileName2);
 
-                ComparingResult comparingResult = compare(filesToCompare, file1, file2);
 
+                Console.WriteLine("Pobieranie zakonczone, rozpoczynam porownanie");
+                ComparingResult comparingResult = compare(filesToCompare, file1, file2);
+                Console.WriteLine("Porownanie zakonczone, rozpoczynam wysylanie wyniku do server");
 
                 comparatorService.finishComparing(comparingResult);
+                Console.WriteLine("Serwer odebral wyniki");
             }
         }
 
@@ -163,14 +170,9 @@ namespace Client
 
             ComparingResult result = new ComparingResult();
             result.PairId = filesToCompare.Id;
-            result.CommonSentences = commonSentences.Select(sen =>
-            {
-                var tmp = new CommonSentence();
-                tmp.File1 = mapToWSDTO(sen.File1);
-                tmp.File2 = mapToWSDTO(sen.File2);
+            result.CommonSentences = toCommonSentenceWS(commonSentences);
 
-                return tmp;
-            }).ToList();
+           
 
             result.ComparingTime = DateTime.Now - startTime;
             result.SendStartTime = DateTime.Now;
@@ -179,6 +181,34 @@ namespace Client
             result.ClientUUID = this.uuid;
 
             return result;
+        }
+
+        private List<CommonSentence> toCommonSentenceWS(List<Result> commonSentences)
+        {
+            return commonSentences.Select(sen =>
+            {
+                var tmp = new CommonSentence();
+                tmp.File1 = mapToWSDTO(sen.File1);
+                tmp.File2 = mapToWSDTO(sen.File2);
+
+                return tmp;
+            }).ToList();
+        }
+
+        private Stream toStream(List<Result> commonSentences)
+        {
+
+            var commonSentencesWS = toCommonSentenceWS(commonSentences);
+
+
+            XmlSerializer serializer = new XmlSerializer(commonSentences.GetType());
+            using (MemoryStream stream = new MemoryStream())
+            {
+                serializer.Serialize(stream, commonSentences);
+                stream.Position = 0;
+            }
+
+            return null;
         }
 
         private WcfServiceLibrary1.SentenceIndexes mapToWSDTO(SentenceIndexes file)
@@ -238,6 +268,16 @@ namespace Client
             downloadedFilesByServerNames.Add(fileName, downloadedFile);
 
             return downloadedFile;
+        }
+
+        private int GetObjectSize(object TestObject)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream ms = new MemoryStream();
+            byte[] Array;
+            bf.Serialize(ms, TestObject);
+            Array = ms.ToArray();
+            return Array.Length;
         }
     }
 }

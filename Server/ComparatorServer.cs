@@ -134,7 +134,12 @@ namespace Server
             Uri baseAddress = new Uri("http://localhost:8000/ComparatorService");
             ServiceHost host = new ServiceHost(typeof(ComparatorService), baseAddress);
 
-            host.AddServiceEndpoint(typeof(IComparatorService), new WSHttpBinding(), "ComparatorService");
+            BasicHttpBinding binding = new BasicHttpBinding();
+            binding.Name = "ComparatorBinding";
+            binding.TransferMode = TransferMode.Streamed;
+            binding.MaxBufferSize = int.MaxValue;
+            binding.MaxReceivedMessageSize = int.MaxValue;
+            host.AddServiceEndpoint(typeof(IComparatorService), binding, "ComparatorService");
 
             ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
             smb.HttpGetEnabled = true;

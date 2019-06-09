@@ -51,6 +51,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="comparator\FinishComparingService.cs" />
     <Compile Include="dto\ComparingState.cs" />
     <Compile Include="dto\ComparingResult.cs" />
     <Compile Include="dto\DataContainer.cs" />

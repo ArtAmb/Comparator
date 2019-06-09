@@ -29,6 +29,7 @@
   <xs:element name="FilesToCompare" nillable="true" type="tns:FilesToCompare" />
   <xs:complexType name="ComparingResult">
     <xs:sequence>
+      <xs:element minOccurs="0" name="ClientUUID" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="CommonSentences" nillable="true" type="tns:ArrayOfCommonSentence" />
       <xs:element minOccurs="0" name="ComparingTime" type="ser:duration" />
       <xs:element minOccurs="0" name="File1DownloadingTime" type="ser:duration" />
