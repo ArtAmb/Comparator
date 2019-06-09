@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Client
 {
@@ -74,7 +75,7 @@ namespace Client
 
                         while ((i + delta < allWordsOfFile1.Length)
                             && (j + delta < allWordsOfFile2.Length)
-                            && allWordsOfFile1[i + delta].Equals(allWordsOfFile2[j + delta]))
+                            && allWordsOfFile1[i + delta].Equals(allWordsOfFile2[j + delta], StringComparison.InvariantCultureIgnoreCase))
                         {
                             ++delta;
                         }
@@ -115,7 +116,7 @@ namespace Client
             stream.Position = 0;
 
             StreamReader reader = new StreamReader(stream);
-            return reader.ReadToEnd().Split(null);
+            return reader.ReadToEnd().Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 
         }
     }

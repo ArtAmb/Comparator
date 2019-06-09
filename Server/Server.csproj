@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComparatorServer.cs" />
+    <Compile Include="forms\ComparingResultViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="forms\ComparingResultViewForm.Designer.cs">
+      <DependentUpon>ComparingResultViewForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="forms\StartForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,10 +66,14 @@
     <Compile Include="forms\MonitorForm.Designer.cs">
       <DependentUpon>MonitorForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Server.cs" />
+    <Compile Include="ServerApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="view\ComonSentenceView.cs" />
     <Compile Include="view\PairView.cs" />
     <Compile Include="view\WorkerView.cs" />
+    <EmbeddedResource Include="forms\ComparingResultViewForm.resx">
+      <DependentUpon>ComparingResultViewForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="forms\MonitorForm.resx">
       <DependentUpon>MonitorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -81,6 +91,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\DataSources\Server.datasource" />
+    <None Include="Properties\DataSources\Server.view.ComonSentenceView.datasource" />
+    <None Include="Properties\DataSources\Server.view.PairView.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

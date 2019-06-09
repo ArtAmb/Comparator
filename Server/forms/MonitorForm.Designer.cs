@@ -1,4 +1,6 @@
-﻿namespace Server
+﻿using Server.view;
+
+namespace Server
 {
     partial class MonitorForm
     {
@@ -28,10 +30,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.helloWorldLabel = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.allFilesView = new System.Windows.Forms.DataGridView();
             this.pairOfUniqueFilesView = new System.Windows.Forms.DataGridView();
+            this.PairUUID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ComparingResult = new System.Windows.Forms.DataGridViewButtonColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -39,9 +44,15 @@
             this.label3 = new System.Windows.Forms.Label();
             this.generateSummaryBtn = new System.Windows.Forms.Button();
             this.processorInfoBtn = new System.Windows.Forms.Button();
+            this.file1NameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.file2NameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.stateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.resultFileDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pairViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.allFilesView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pairOfUniqueFilesView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.workersView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pairViewBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // helloWorldLabel
@@ -57,7 +68,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(16, 372);
+            this.button1.Location = new System.Drawing.Point(12, 369);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
@@ -70,18 +81,47 @@
             this.allFilesView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.allFilesView.Location = new System.Drawing.Point(12, 77);
             this.allFilesView.Name = "allFilesView";
+            this.allFilesView.ReadOnly = true;
             this.allFilesView.Size = new System.Drawing.Size(457, 257);
             this.allFilesView.TabIndex = 6;
-            this.allFilesView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.allFilesView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.allFilesView_CellContentClick);
             // 
             // pairOfUniqueFilesView
             // 
+            this.pairOfUniqueFilesView.AllowUserToAddRows = false;
+            this.pairOfUniqueFilesView.AllowUserToDeleteRows = false;
+            this.pairOfUniqueFilesView.AutoGenerateColumns = false;
             this.pairOfUniqueFilesView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.pairOfUniqueFilesView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.file1NameDataGridViewTextBoxColumn,
+            this.PairUUID,
+            this.file2NameDataGridViewTextBoxColumn,
+            this.stateDataGridViewTextBoxColumn,
+            this.resultFileDataGridViewTextBoxColumn,
+            this.ComparingResult});
+            this.pairOfUniqueFilesView.DataSource = this.pairViewBindingSource;
             this.pairOfUniqueFilesView.Location = new System.Drawing.Point(675, 77);
             this.pairOfUniqueFilesView.Name = "pairOfUniqueFilesView";
+            this.pairOfUniqueFilesView.ReadOnly = true;
             this.pairOfUniqueFilesView.Size = new System.Drawing.Size(467, 257);
             this.pairOfUniqueFilesView.TabIndex = 7;
-            this.pairOfUniqueFilesView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
+            this.pairOfUniqueFilesView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.pairOfUniqueFilesView_CellContentClick);
+            // 
+            // PairUUID
+            // 
+            this.PairUUID.DataPropertyName = "PairUUID";
+            this.PairUUID.HeaderText = "PairUUID";
+            this.PairUUID.Name = "PairUUID";
+            this.PairUUID.ReadOnly = true;
+            this.PairUUID.Visible = false;
+            // 
+            // ComparingResult
+            // 
+            this.ComparingResult.HeaderText = "ComparingResult";
+            this.ComparingResult.Name = "ComparingResult";
+            this.ComparingResult.ReadOnly = true;
+            this.ComparingResult.Text = "Podgląd";
+            this.ComparingResult.UseColumnTextForButtonValue = true;
             // 
             // label1
             // 
@@ -93,7 +133,6 @@
             this.label1.Size = new System.Drawing.Size(155, 26);
             this.label1.TabIndex = 8;
             this.label1.Text = "Wszystkie pliki";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -116,16 +155,15 @@
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(467, 149);
             this.textBox1.TabIndex = 10;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // workersView
             // 
             this.workersView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.workersView.Location = new System.Drawing.Point(16, 435);
             this.workersView.Name = "workersView";
+            this.workersView.ReadOnly = true;
             this.workersView.Size = new System.Drawing.Size(457, 257);
             this.workersView.TabIndex = 11;
-            this.workersView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellContentClick);
             // 
             // label3
             // 
@@ -137,7 +175,6 @@
             this.label3.Size = new System.Drawing.Size(93, 26);
             this.label3.TabIndex = 12;
             this.label3.Text = "Workers";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // generateSummaryBtn
             // 
@@ -151,13 +188,46 @@
             // 
             // processorInfoBtn
             // 
-            this.processorInfoBtn.Location = new System.Drawing.Point(16, 343);
+            this.processorInfoBtn.Location = new System.Drawing.Point(12, 340);
             this.processorInfoBtn.Name = "processorInfoBtn";
             this.processorInfoBtn.Size = new System.Drawing.Size(122, 23);
             this.processorInfoBtn.TabIndex = 14;
             this.processorInfoBtn.Text = "Get processor info";
             this.processorInfoBtn.UseVisualStyleBackColor = true;
             this.processorInfoBtn.Click += new System.EventHandler(this.processorInfoBtn_Click);
+            // 
+            // file1NameDataGridViewTextBoxColumn
+            // 
+            this.file1NameDataGridViewTextBoxColumn.DataPropertyName = "File1Name";
+            this.file1NameDataGridViewTextBoxColumn.HeaderText = "File1Name";
+            this.file1NameDataGridViewTextBoxColumn.Name = "file1NameDataGridViewTextBoxColumn";
+            this.file1NameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // file2NameDataGridViewTextBoxColumn
+            // 
+            this.file2NameDataGridViewTextBoxColumn.DataPropertyName = "File2Name";
+            this.file2NameDataGridViewTextBoxColumn.HeaderText = "File2Name";
+            this.file2NameDataGridViewTextBoxColumn.Name = "file2NameDataGridViewTextBoxColumn";
+            this.file2NameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // stateDataGridViewTextBoxColumn
+            // 
+            this.stateDataGridViewTextBoxColumn.DataPropertyName = "State";
+            this.stateDataGridViewTextBoxColumn.HeaderText = "State";
+            this.stateDataGridViewTextBoxColumn.Name = "stateDataGridViewTextBoxColumn";
+            this.stateDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // resultFileDataGridViewTextBoxColumn
+            // 
+            this.resultFileDataGridViewTextBoxColumn.DataPropertyName = "ResultFile";
+            this.resultFileDataGridViewTextBoxColumn.HeaderText = "ResultFile";
+            this.resultFileDataGridViewTextBoxColumn.Name = "resultFileDataGridViewTextBoxColumn";
+            this.resultFileDataGridViewTextBoxColumn.ReadOnly = true;
+            this.resultFileDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // pairViewBindingSource
+            // 
+            this.pairViewBindingSource.DataSource = typeof(Server.view.PairView);
             // 
             // MonitorForm
             // 
@@ -182,6 +252,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.allFilesView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pairOfUniqueFilesView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.workersView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pairViewBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,5 +271,12 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button generateSummaryBtn;
         private System.Windows.Forms.Button processorInfoBtn;
+        private System.Windows.Forms.BindingSource pairViewBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn file1NameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PairUUID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn file2NameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn stateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn resultFileDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn ComparingResult;
     }
 }

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Server
 {
-    static class Server
+    static class ServerApplication
     {
 
         [STAThread]

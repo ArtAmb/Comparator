@@ -1,4 +1,5 @@
-﻿using Server.view;
+﻿using Server.forms;
+using Server.view;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ namespace Server
     public partial class MonitorForm : Form
     {
         private Form mainForm = null;
+        private ComparingResultViewForm comparingResultViewForm = null;
         private ComparatorServer comparatorServer = ComparatorServer.getInstance();
 
         public MonitorForm(Form mainForm)
@@ -23,7 +25,7 @@ namespace Server
 
             this.mainForm = mainForm;
             InitializeComponent();
-
+            
             dataDTO.AllClients.CollectionChanged += AllClients_CollectionChanged;
             dataDTO.UniquePairsOfFilesToCompare.CollectionChanged += UniquePairsOfFilesToCompare_CollectionChanged;
             dataDTO.LogMessages.CollectionChanged += LogMessages_CollectionChanged;
@@ -68,38 +70,10 @@ namespace Server
         {
             base.OnFormClosing(e);
             mainForm.Close();
+            if(comparingResultViewForm != null)
+                comparingResultViewForm.Close();
         }
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             DataContainer.read().LogMessages.Add("Dzialam");
@@ -205,6 +179,48 @@ namespace Server
         private void processorInfoBtn_Click(object sender, EventArgs e)
         {
             DataContainer.read().LogMessages.Add(new ProcessorService().getProcessorInfo());
+        }
+
+        private void showComparingResultBtn_Click(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void closeComparingFrom(object sender, EventArgs e)
+        {
+            comparingResultViewForm = null;
+        }
+
+        private void pairOfUniqueFilesView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(pairOfUniqueFilesView.Columns[e.ColumnIndex].Name == "ComparingResult" && e.RowIndex >= 0)
+            {
+                
+                if (comparingResultViewForm != null)
+                    comparingResultViewForm.Close();
+                
+                String pairUUID = (String)pairOfUniqueFilesView.Rows[e.RowIndex].Cells["pairUUID"].Value;
+
+                FilesToCompare selectedPair = DataContainer.read()
+                    .UniquePairsOfFilesToCompare
+                    .Where(pair => pair.Id.Equals(pairUUID))
+                    .First();
+
+                if(selectedPair.ComparingResult == null)
+                {
+                    MessageBox.Show(String.Format("Pliki: {0} oraz {1} nie zostały jeszcze porównane", selectedPair.FileName1, selectedPair.FileName2));
+                    return;
+                }
+
+                comparingResultViewForm = new ComparingResultViewForm(selectedPair);
+                comparingResultViewForm.FormClosed += closeComparingFrom;
+                comparingResultViewForm.Show();
+            }
+        }
+
+        private void allFilesView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
