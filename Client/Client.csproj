@@ -43,7 +43,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WcfServiceLibrary1, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
@@ -72,6 +71,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\ComparatorReference\ComparatorService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\ComparatorReference\ComparatorService4.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\DataSources\WcfServiceLibrary1.dto.ServerOptions.datasource" />
@@ -103,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WcfServiceLibrary1\ComparatorServiceLibrary.csproj">
-      <Project>{E6230BE5-E3B6-4FDD-999F-7703E5E2D114}</Project>
+      <Project>{e6230be5-e3b6-4fdd-999f-7703e5e2d114}</Project>
       <Name>ComparatorServiceLibrary</Name>
     </ProjectReference>
   </ItemGroup>

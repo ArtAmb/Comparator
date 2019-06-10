@@ -49,6 +49,9 @@ namespace WcfServiceLibrary1
         public DateTime SendStartTime { get => sendStartTime; set => sendStartTime = value; }
         public TimeSpan SendingTime { get => sendingTime; set => sendingTime = value; }
         public string ClientUUID { get => clientUUID; set => clientUUID = value; }
+
+        public double PercentOfSimilarityFile1 { get; set; }
+        public double PercentOfSimilarityFile2 { get; set; }
     }
 
     [MessageContract]

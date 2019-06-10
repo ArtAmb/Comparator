@@ -39,6 +39,11 @@ namespace WcfServiceLibrary1.comparator
             DataContainer.read().UniquePairsOfFilesToCompare.Add(tmp);
             DataContainer.read().UniquePairsOfFilesToCompare.Remove(tmp);
 
+            if (DataContainer.read().UniquePairsOfFilesToCompare.Where(pair => pair.ComparingResult == null).Count() == 0)
+            {
+                DataContainer.read().LogMessages.Add("Wszystkie pliki zostały porównane");
+            }
+
             return newFileName;
         }
 
@@ -133,10 +138,6 @@ namespace WcfServiceLibrary1.comparator
             comparedPair.ComparingResultFile = newFileName;
             DataContainer.read().LogMessages.Add("Wynik porownania w pliku " + newFileName);
 
-            if (DataContainer.read().UniquePairsOfFilesToCompare.Where(pair => pair.ComparingResult == null).Count() == 0)
-            {
-                DataContainer.read().LogMessages.Add("Wszystkie pliki zostały porównane");
-            }
         }
 
         private string toFileIdxDesc(string name, SentenceIndexes file1)

@@ -5,7 +5,8 @@
       <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd0" namespace="http://achilles.tu.kielce.pl" />
       <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WcfServiceLibrary1" />
-      <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd3" namespace="http://schemas.microsoft.com/Message" />
+      <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Server" />
+      <xsd:import schemaLocation="http://localhost:8000/ComparatorService?xsd=xsd4" namespace="http://schemas.microsoft.com/Message" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IComparatorService_joinToServer_InputMessage">

@@ -56,7 +56,8 @@ namespace Server
 
         private void LogMessages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            textBox1.Text = String.Join(Environment.NewLine, DataContainer.read().LogMessages);
+            textBox1.Text = "";
+            textBox1.AppendText(String.Join(Environment.NewLine, DataContainer.read().LogMessages));
         }
 
         private void MonitorForm_Load(object sender, EventArgs e)
@@ -90,7 +91,7 @@ namespace Server
 
         private void generateSummaryBtn_Click(object sender, EventArgs e)
         {
-            String comparedFilesHeader = String.Join(@";", "File1", "File2", "Ip", "Port", "ProcessorInfo", "ComparingTime", "DownloadFile1Time", "DownloadFile2Time", "SendingResultTime", "TotalNewtworkTransferTime");
+            String comparedFilesHeader = String.Join(@";", "File1", "File2", "Ip", "Port", "ProcessorInfo", "ComparingTime", "DownloadFile1Time", "DownloadFile2Time", "SendingResultTime", "TotalNewtworkTransferTime", "PercentOfSimilarityFile1", "PercentOfSimilarityFile2");
             String notComparedFilesHeader = @"File1;File2";
 
             List<String> uncomparedFilesRows = DataContainer.read().UniquePairsOfFilesToCompare
@@ -119,8 +120,9 @@ namespace Server
                                         result.File1DownloadingTime.TotalMilliseconds,
                                         result.File2DownloadingTime.TotalMilliseconds,
                                         result.SendingTime.TotalMilliseconds,
-                                        result.File1DownloadingTime.TotalMilliseconds + result.File2DownloadingTime.TotalMilliseconds + result.SendingTime.TotalMilliseconds
-                                        );
+                                        result.File1DownloadingTime.TotalMilliseconds + result.File2DownloadingTime.TotalMilliseconds + result.SendingTime.TotalMilliseconds,
+                                        result.PercentOfSimilarityFile1,
+                                        result.PercentOfSimilarityFile2);
                                 }).ToList();
 
 

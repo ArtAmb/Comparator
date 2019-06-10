@@ -4,11 +4,10 @@ using System.IO;
 using Client.ComparatorReference;
 using System.Threading;
 using System.Collections.Generic;
-using WcfServiceLibrary1;
 using System.Linq;
 using System.Xml.Serialization;
-using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
+using WcfServiceLibrary1;
 
 namespace Client
 {
@@ -166,19 +165,21 @@ namespace Client
 
             DateTime startTime = DateTime.Now;
             
-            List<Result> commonSentences = comparator.compare(filePathRoot + fileName1, filePathRoot + fileName2);
+            var reslutOfComprasion = comparator.compare(filePathRoot + fileName1, filePathRoot + fileName2);
 
             ComparingResult result = new ComparingResult();
             result.PairId = filesToCompare.Id;
-            result.CommonSentences = toCommonSentenceWS(commonSentences);
-
-           
+            result.CommonSentences = toCommonSentenceWS(reslutOfComprasion.Results);           
 
             result.ComparingTime = DateTime.Now - startTime;
             result.SendStartTime = DateTime.Now;
             result.File1DownloadingTime = file1.DownloadingTime;
             result.File2DownloadingTime = file2.DownloadingTime;
             result.ClientUUID = this.uuid;
+            result.PercentOfSimilarityFile1 = reslutOfComprasion.PercentOfSimilarityF1;
+            result.PercentOfSimilarityFile2 = reslutOfComprasion.PercentOfSimilarityF2;
+
+
 
             return result;
         }

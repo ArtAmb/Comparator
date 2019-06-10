@@ -22,6 +22,7 @@
   </MetadataSources>
   <Metadata>
     <MetadataFile FileName="ComparatorService.wsdl" MetadataType="Wsdl" ID="fac271e2-b179-4956-8417-f0275ef34f5c" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?wsdl=wsdl0" />
+    <MetadataFile FileName="ComparatorService4.xsd" MetadataType="Schema" ID="4498aa8b-33e7-4508-a951-c0edda14ff2d" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd4" />
     <MetadataFile FileName="ComparatorService.xsd" MetadataType="Schema" ID="bcbb32c7-0527-407c-80e9-84514bd832fd" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd1" />
     <MetadataFile FileName="ComparatorService1.xsd" MetadataType="Schema" ID="75c4e257-7db5-4b98-9ed6-06f657989332" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd3" />
     <MetadataFile FileName="ComparatorService2.xsd" MetadataType="Schema" ID="33e93e8d-6b04-44be-98f6-21c2a12a76c0" SourceId="1" SourceUrl="http://localhost:8000/ComparatorService?xsd=xsd2" />
